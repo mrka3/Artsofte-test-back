@@ -1,0 +1,33 @@
+﻿@model Logic.Auth.Registration.RegistrationForm
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <p>
+        @Html.LabelFor(m => m.Fio, "Фамилия Имя Отчество")<br />
+        @Html.TextBoxFor(model => model.Fio)
+        @Html.ValidationMessageFor(model => model.Fio)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Phone, "Номер телефона")<br />
+        @Html.TextBoxFor(model => model.Phone)
+        @Html.ValidationMessageFor(model => model.Phone)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Email, "Email")<br />
+        @Html.TextBoxFor(model => model.Email)
+        @Html.ValidationMessageFor(model => model.Email)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Password, "Пароль")<br />
+        @Html.PasswordFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.PasswordConfirm, "Подтверждение пароля")<br />
+        @Html.PasswordFor(model => model.PasswordConfirm)
+        @Html.ValidationMessageFor(model => model.PasswordConfirm)
+    </p>
+    <p>
+        <input type="submit" value="Отправить" />
+    </p>
+}
