@@ -17,6 +17,16 @@ namespace Database.Entities.Users.Repositories
             return applicationDbContext.Users.FirstOrDefault(user => user.Id == id);
         }
 
+        public User Find(string phone)
+        {
+            return applicationDbContext.Users.FirstOrDefault(user => user.Phone == phone);
+        }
+
+        public User Find(string phone, string password)
+        {
+            return applicationDbContext.Users.FirstOrDefault(user => user.Phone == phone && user.Password == password);
+        }
+
         public List<User> GetAll()
         {
             return applicationDbContext.Users.ToList();

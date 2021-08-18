@@ -1,5 +1,6 @@
 ﻿using Logic.Auth;
 using Logic.Auth.Login;
+using Logic.Auth.Profile;
 using Logic.Auth.Registration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,28 +8,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Application.Controllers
+namespace Api.Areas
 {
-    [Route("account")]
-    public class AccountController : Controller
+    [Route("account/api")]
+    public class AccountApiController : ControllerBase
     {
         private readonly IRegistrationFormValidator registrationFormValidator;
         private readonly ILoginFormValidator loginFormValidator;
         private readonly IAccountManager accountManager;
 
-        public AccountController(IRegistrationFormValidator registrationFormValidator,
+        public AccountApiController(IRegistrationFormValidator registrationFormValidator,
                                  IAccountManager accountManager,
                                  ILoginFormValidator loginFormValidator)
         {
             this.registrationFormValidator = registrationFormValidator;
             this.accountManager = accountManager;
             this.loginFormValidator = loginFormValidator;
-        }
-
-        [HttpGet("register")]
-        public IActionResult Register()
-        {
-            return View();
         }
 
         [HttpPost("register")]
@@ -39,23 +34,10 @@ namespace Application.Controllers
             if (ModelState.IsValid)
             {
                 accountManager.Register(form);
-                return RedirectToAction("RegisterSuccess", new { name = form.Fio });
+                return Ok();
             }
-                
-            return View(form);
-        }
-        
-        [HttpGet("register/success")]
-        public IActionResult RegisterSuccess(string name)
-        {
-            ViewData["Name"] = name;
-            return View();
-        }
-        
-        [HttpGet("login")]
-        public IActionResult Login()
-        {
-            return View();
+
+            return BadRequest(ModelState);
         }
 
         [HttpPost("login")]
@@ -65,10 +47,10 @@ namespace Application.Controllers
             if (ModelState.IsValid)
             {
                 accountManager.Login(form, HttpContext);
-                return RedirectToAction("Cabinet");
+                return Ok();
             }
 
-            return View(form);
+            return BadRequest(ModelState);
         }
 
         [Authorize]
@@ -76,16 +58,16 @@ namespace Application.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return Ok();
         }
 
         [Authorize]
-        [HttpGet("cabinet")]
-        public IActionResult Cabinet()
+        [HttpGet("get-my-info")]
+        public ProfileModel GetMyInfo()
         {
             var phoneIdentity = HttpContext.User.Identity.Name;
             var profile = accountManager.GetAccount(phoneIdentity);
-            return View(profile);
+            return profile;
         }
     }
 }

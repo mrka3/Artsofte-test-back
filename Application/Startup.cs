@@ -1,7 +1,9 @@
 using Database;
 using Database.Entities.Users.Repositories;
 using Logic.Auth;
+using Logic.Auth.Login;
 using Logic.Auth.Registration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,13 @@ namespace Application
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<IRegistrationFormValidator, RegistrationFormValidator>();
+            services.AddScoped<ILoginFormValidator, LoginFormValidator>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,7 +51,8 @@ namespace Application
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();   
+            app.UseAuthorization();    
 
             app.UseEndpoints(endpoints =>
             {

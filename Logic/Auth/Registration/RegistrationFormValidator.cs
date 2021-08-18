@@ -15,14 +15,12 @@ namespace Logic.Auth.Registration
             this.userRepository = userRepository;
         }
 
-        public ModelStateDictionary Validate(RegistrationForm form, ModelStateDictionary modelState)
+        public void Validate(RegistrationForm form, ModelStateDictionary modelState)
         {
             ValidateFio(form.Fio, modelState);
             ValidatePhone(form.Phone, modelState);
             ValidateEmail(form.Email, modelState);
             ValidatePassword(form.Password, form.PasswordConfirm, modelState);
-
-            return modelState;
         }
 
         private void ValidateFio(string fio, ModelStateDictionary modelState)
@@ -71,7 +69,7 @@ namespace Logic.Auth.Registration
                 return;
             }
 
-            if (email.Length > 11)
+            if (email.Length > 150)
                 modelState.AddModelError("Email", "Длина должна быть меньше 150 символов");
 
             var isMatch = Regex.Match(email, emailPattern, RegexOptions.IgnoreCase);

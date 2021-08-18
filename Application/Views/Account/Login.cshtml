@@ -1,0 +1,18 @@
+﻿@model Logic.Auth.Login.LoginForm
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <p>
+        @Html.LabelFor(m => m.Phone, "Номер телефона")<br />
+        @Html.TextBoxFor(model => model.Phone)
+        @Html.ValidationMessageFor(model => model.Phone)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Password, "Пароль")<br />
+        @Html.PasswordFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+    </p>
+    <p>
+        <input type="submit" value="Отправить" />
+    </p>
+}

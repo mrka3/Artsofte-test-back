@@ -1,0 +1,18 @@
+﻿@model Logic.Auth.Profile.ProfileModel
+
+<p>
+    @Html.LabelFor(m => m.FIO, "Фамилия Имя Отчество")<br />
+    @Html.DisplayTextFor(model => model.FIO)
+</p>
+<p>
+    @Html.LabelFor(m => m.Phone, "Номер телефона")<br />
+    @Html.DisplayTextFor(model => model.Phone)
+</p>
+<p>
+    @Html.LabelFor(m => m.Email, "Email")<br />
+    @Html.DisplayTextFor(model => model.Email)
+</p>
+
+<p>
+    @Html.ActionLink("Выйти из аккаунта", "Logout")
+</p>

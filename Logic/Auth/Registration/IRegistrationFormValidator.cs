@@ -4,6 +4,6 @@ namespace Logic.Auth.Registration
 {
     public interface IRegistrationFormValidator
     {
-        ModelStateDictionary Validate(RegistrationForm form, ModelStateDictionary modelState);
+        void Validate(RegistrationForm form, ModelStateDictionary modelState);
     }
 }
